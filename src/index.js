@@ -10,10 +10,18 @@
  * governing permissions and limitations under the License.
  */
 
-const { Command, run } = require('@oclif/command')
+const { Command, run, flags } = require('@oclif/command')
 const Config = require('@oclif/config')
 
 class AIOCommand extends Command { }
+
+function getFlagNamesFromArgs(argv) {
+  let flagNames = argv.filter(elem => elem.indexOf('-') === 0)
+  let cleanedNames = flagNames.map( elem => {
+    return elem.replace("^\-+", "")
+  }
+  return cleanedNames
+}
 
 AIOCommand.run = async (argv, opts) => {
   if (!argv) {
@@ -33,19 +41,42 @@ AIOCommand.run = async (argv, opts) => {
   if (firstFlag < 0) {
     firstFlag = argv.length
   }
+
   // 2. try to make the biggest topic command by combining with ':'
   // and looking up in this.config.commandIDs
   for (let x = firstFlag; x > -1; x--) {
     subCommand = argv.slice(0, x).join(':')
     // if (config.findTopic(subCommand)) { // <= this works but does not support aliases
-    if (config.findCommand(subCommand)) {
+    let foundCommand = config.findCommand(subCommand)
+    // foundCommand defines static 'flags' prop
+    if (foundCommand != null) {
       argv = [subCommand].concat(argv.slice(x))
       break
     }
   }
 
+  // potentially there are global flags present, where we want specific action
+  // but the command should be able to override our behavior
+
+  // pull out any special flags
+  let flagNames = getFlagNamesFromArgs(argv)
+  console.log('flagNames', flagNames)
+  if(flagNames.indexOf('--debug') > -1) {
+    console.log('setting debug to be on ...')
+    argv.splice(argv.indexOf('--debug'),1)
+    process.env.DEBUG = '*'
+  }
+
   // the second parameter is the root path to the CLI containing the command
   return run(argv, config.options)
+}
+
+AIOCommand.flags =  {
+  temple: flags.string({
+    char: 'n',
+    description: 'let us see now ...',
+    default: 'hmm'
+  })
 }
 
 module.exports = AIOCommand
