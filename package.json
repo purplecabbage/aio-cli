@@ -62,6 +62,7 @@
       "@adobe/aio-cli-plugin-console"
     ]
   },
+  "feedbackForum": "https://docs.google.com/forms/d/e/1FAIpQLSdbRaK00Oo2ESXqcNU01p2Sg0eCrkjFNtxAbDpwrv3h6Xc5SQ/viewform",
   "jest": {
     "collectCoverage": true,
     "collectCoverageFrom": [
