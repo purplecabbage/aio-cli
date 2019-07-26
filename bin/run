@@ -13,5 +13,5 @@ governing permissions and limitations under the License.
 */
 
 require('../src/').run()
-.then(require('@oclif/command/flush'))
-.catch(require('@oclif/errors/handle')) 
+  .then(require('@oclif/command/flush'))
+  .catch(require('@oclif/errors/handle'))

@@ -15,11 +15,11 @@ const Config = require('@oclif/config')
 
 class AIOCommand extends Command { }
 
-function getFlagNamesFromArgs(argv) {
+function getFlagNamesFromArgs (argv) {
   let flagNames = argv.filter(elem => elem.indexOf('-') === 0)
-  let cleanedNames = flagNames.map( elem => {
-    return elem.replace("^\-+", "")
-  }
+  let cleanedNames = flagNames.map(elem => {
+    return elem.replace('^-+', '')
+  })
   return cleanedNames
 }
 
