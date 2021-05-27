@@ -5,7 +5,7 @@ const AuthLib = '@adobe/aio-cli-plugin-auth'
 const topicMap = {
   console: '@adobe/aio-cli-plugin-console',
   app: '@adobe/aio-cli-plugin-app',
-  events: '@adobe/aio-cli-plugin-events',
+  event: '@adobe/aio-cli-plugin-events',
   // runtime has an alias
   runtime: '@adobe/aio-cli-plugin-runtime',
   rt: '@adobe/aio-cli-plugin-runtime',
@@ -29,6 +29,8 @@ module.exports = async function ({ id, config }) {
     if (!pluginIds.includes(topicMap[id])) {
       console.log('plugin not found, installing it')
       await config.runCommand('plugins:install', [topicMap[id]])
+      // force a reload of config so we can call the newly added plugin because oclif won't flush config
+      await config.load()
     } else {
       // console.log('looks like it is already installed')
     }
