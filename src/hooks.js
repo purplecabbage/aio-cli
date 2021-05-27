@@ -23,12 +23,11 @@ const topicMap = {
 
 module.exports = async function ({ id, config }) {
   // name, version
-  console.log('id = ', id)
   if (Object.keys(topicMap).includes(id)) {
     // check that the app plugin is installed
     const pluginIds = config.plugins.map((plugin) => plugin.name)
     if (!pluginIds.includes(topicMap[id])) {
-      console.log('not found, installing it')
+      console.log('plugin not found, installing it')
       await config.runCommand('plugins:install', [topicMap[id]])
     } else {
       // console.log('looks like it is already installed')
